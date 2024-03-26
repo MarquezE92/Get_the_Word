@@ -33,7 +33,7 @@ git clone https://github.com/yourusername/get-the-word.git
 ```
 2. Navigate into the project directory:
 ```bash
-cd get-the-word
+cd Get_the_Word
 ```
 3. Install dependencies:
 ```bash
