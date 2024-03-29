@@ -40,6 +40,12 @@ interface StateObject {
   word: string[];
   counterTries: string;
   firstTry: string[];
+  firstTryColors: string[];
+  secondTryColors: string[];
+  thirdTryColors: string[];
+  fourthTryColors: string[];
+  fifthTryColors: string[];
+  sixthTryColors: string[];
   secondTry: string[];
   thirdTry: string[];
   fourthTry: string[];
@@ -56,6 +62,12 @@ export default function Home() {
     word: ["p", "r", "u", "e", "b"],
     counterTries: "firstTry",
     firstTry: [" ", " ", " ", " ", " "],
+    firstTryColors: ["bg-gray-400", "bg-gray-400", "bg-gray-400", "bg-gray-400", "bg-gray-400"],
+    secondTryColors: ["bg-gray-400", "bg-gray-400", "bg-gray-400", "bg-gray-400", "bg-gray-400"],
+    thirdTryColors: ["bg-gray-400", "bg-gray-400", "bg-gray-400", "bg-gray-400", "bg-gray-400"],
+    fourthTryColors: ["bg-gray-400", "bg-gray-400", "bg-gray-400", "bg-gray-400", "bg-gray-400"],
+    fifthTryColors: ["bg-gray-400", "bg-gray-400", "bg-gray-400", "bg-gray-400", "bg-gray-400"],
+    sixthTryColors: ["bg-gray-400", "bg-gray-400", "bg-gray-400", "bg-gray-400", "bg-gray-400"],
     secondTry: [" ", " ", " ", " ", " "],
     thirdTry: [" ", " ", " ", " ", " "],
     fourthTry: [" ", " ", " ", " ", " "],
@@ -81,11 +93,40 @@ export default function Home() {
 
         if(selection.word[letter] === char) {
           updatedColors[char] = "bg-green-400"
+          setSelection(prevState => ({
+            ...prevState,
+            fifthTryColors: [
+              ...prevState.fifthTryColors.slice(0, letter),
+              "bg-green-400",
+              ...prevState.fifthTryColors.slice(letter + 1)
+            ]
+          }));
           
-        } else if(selection.word.includes(char) &&
-          updatedColors[char] !== "bg-green-400"
-        ) {
-          updatedColors[char] ="bg-orange-400"}
+        } else if(selection.word.includes(char) ) {
+          setSelection(prevState => ({
+            ...prevState,
+            fifthTryColors: [
+              ...prevState.fifthTryColors.slice(0, letter),
+              "bg-orange-400",
+              ...prevState.fifthTryColors.slice(letter + 1)
+            ]
+          }));
+
+          if(updatedColors[char] !== "bg-green-400" ) {
+            updatedColors[char] ="bg-orange-400"
+          }
+        
+          } else {
+            setSelection(prevState => ({
+              ...prevState,
+              fifthTryColors: [
+                ...prevState.fifthTryColors.slice(0, letter),
+                "bg-gray-600",
+                ...prevState.fifthTryColors.slice(letter + 1)
+              ]
+            }));
+            updatedColors[char] ="bg-gray-600"
+          }
         
       }
       setSelection(prevState=> ({
@@ -100,11 +141,37 @@ export default function Home() {
 
         if(selection.word[letter] === char) {
           updatedColors[char] = "bg-green-400"
+          setSelection(prevState => ({
+            ...prevState,
+            fourthTryColors: [
+              ...prevState.fourthTryColors.slice(0, letter),
+              "bg-green-400",
+              ...prevState.fourthTryColors.slice(letter + 1)
+            ]
+          }));
           
-        } else if(selection.word.includes(char) &&
-          updatedColors[char] !== "bg-green-400"
-        ) {
-          updatedColors[char] ="bg-orange-400"}
+        } else if(selection.word.includes(char)) {
+          setSelection(prevState => ({
+            ...prevState,
+            fourthTryColors: [
+              ...prevState.fourthTryColors.slice(0, letter),
+              "bg-orange-400",
+              ...prevState.fourthTryColors.slice(letter + 1)
+            ]
+          }));
+          if(updatedColors[char] !== "bg-green-400"){
+          updatedColors[char] ="bg-orange-400"} 
+        } else {
+          setSelection(prevState => ({
+            ...prevState,
+            fourthTryColors: [
+              ...prevState.fourthTryColors.slice(0, letter),
+              "bg-gray-600",
+              ...prevState.fourthTryColors.slice(letter + 1)
+            ]
+          }));
+          updatedColors[char] ="bg-gray-600"
+        }
         
       }
       setSelection(prevState=> ({
@@ -118,12 +185,39 @@ export default function Home() {
         let char = selection.thirdTry[letter]
 
         if(selection.word[letter] === char) {
+          setSelection(prevState => ({
+            ...prevState,
+            thirdTryColors: [
+              ...prevState.thirdTryColors.slice(0, letter),
+              "bg-green-400",
+              ...prevState.thirdTryColors.slice(letter + 1)
+            ]
+          }));
           updatedColors[char] = "bg-green-400"
           
-        } else if(selection.word.includes(char) &&
-          updatedColors[char] !== "bg-green-400"
-        ) {
-          updatedColors[char] ="bg-orange-400"}
+        } else if(selection.word.includes(char))  {
+          setSelection(prevState => ({
+            ...prevState,
+            thirdTryColors: [
+              ...prevState.thirdTryColors.slice(0, letter),
+              "bg-orange-400",
+              ...prevState.thirdTryColors.slice(letter + 1)
+            ]
+          }));
+          if(updatedColors[char] !== "bg-green-400") {
+            updatedColors[char] ="bg-orange-400"
+          }
+       } else {
+        setSelection(prevState => ({
+          ...prevState,
+          thirdTryColors: [
+            ...prevState.thirdTryColors.slice(0, letter),
+            "bg-gray-600",
+            ...prevState.thirdTryColors.slice(letter + 1)
+          ]
+        }));
+        updatedColors[char] ="bg-gray-600"
+       }
         
       }
       setSelection(prevState=> ({
@@ -138,11 +232,38 @@ export default function Home() {
 
         if(selection.word[letter] === char) {
           updatedColors[char] = "bg-green-400"
+          setSelection(prevState => ({
+            ...prevState,
+            secondTryColors: [
+              ...prevState.secondTryColors.slice(0, letter),
+              "bg-green-400",
+              ...prevState.secondTryColors.slice(letter + 1)
+            ]
+          }));
           
-        } else if(selection.word.includes(char) &&
-          updatedColors[char] !== "bg-green-400"
-        ) {
-          updatedColors[char] ="bg-orange-400"}
+        } else if(selection.word.includes(char) ) {
+          setSelection(prevState => ({
+            ...prevState,
+            secondTryColors: [
+              ...prevState.secondTryColors.slice(0, letter),
+              "bg-orange-400",
+              ...prevState.secondTryColors.slice(letter + 1)
+            ]
+          }));
+          if(updatedColors[char] !== "bg-green-400") {
+            updatedColors[char] ="bg-orange-400"
+            }
+          } else {
+            updatedColors[char] ="bg-gray-600";
+            setSelection(prevState => ({
+              ...prevState,
+              secondTryColors: [
+                ...prevState.secondTryColors.slice(0, letter),
+                "bg-gray-600",
+                ...prevState.secondTryColors.slice(letter + 1)
+              ]
+            }))
+          }
         
       }
 
@@ -158,11 +279,38 @@ export default function Home() {
 
         if(selection.word[letter] === char) {
           updatedColors[char] = "bg-green-400"
+          setSelection(prevState => ({
+            ...prevState,
+            firstTryColors: [
+              ...prevState.firstTryColors.slice(0, letter),
+              "bg-green-400",
+              ...prevState.firstTryColors.slice(letter + 1)
+            ]
+          }));
           
-        } else if(selection.word.includes(char) &&
-          updatedColors[char] !== "bg-green-400"
-        ) {
+        } else if(selection.word.includes(char)) {
+          setSelection(prevState => ({
+            ...prevState,
+            firstTryColors: [
+              ...prevState.firstTryColors.slice(0, letter),
+              "bg-orange-400",
+              ...prevState.firstTryColors.slice(letter + 1)
+            ]
+          }));
+
+          if(updatedColors[char] !== "bg-green-400"){
           updatedColors[char] ="bg-orange-400"}
+        } else {
+          updatedColors[char] ="bg-gray-600";
+          setSelection(prevState => ({
+            ...prevState,
+            firstTryColors: [
+              ...prevState.firstTryColors.slice(0, letter),
+              "bg-gray-600",
+              ...prevState.firstTryColors.slice(letter + 1)
+            ]
+          }));
+        }
         } 
 
     setSelection(prevState=> ({
@@ -248,7 +396,7 @@ export default function Home() {
         <div className="w-full h-full flex justify-center gap-1">
           {
           selection.firstTry.map((character, index)=> (
-            <div key={"first" + index} className={`w-10 h-10 flex items-center justify-center rounded-lg cursor-pointer ${color}`}>
+            <div key={"first" + index} className={`w-10 h-10 flex items-center justify-center rounded-lg cursor-pointer ${selection.firstTryColors[index]}`}>
               <p >{character}</p>
             </div>
             ))
@@ -257,7 +405,7 @@ export default function Home() {
         <div className="w-full h-full flex justify-center gap-1">
           {
           selection.secondTry.map((character, index)=> (
-            <div key={"second" + index} className={`w-10 h-10 flex items-center justify-center rounded-lg cursor-pointer ${color}`}>
+            <div key={"second" + index} className={`w-10 h-10 flex items-center justify-center rounded-lg cursor-pointer ${selection.secondTryColors[index]}`}>
               <p >{character}</p>
             </div>
             ))
@@ -266,7 +414,7 @@ export default function Home() {
         <div className="w-full h-full flex justify-center gap-1">
           {
           selection.thirdTry.map((character, index)=> (
-            <div key={"third" + index} className={`w-10 h-10 flex items-center justify-center rounded-lg cursor-pointer ${color}`}>
+            <div key={"third" + index} className={`w-10 h-10 flex items-center justify-center rounded-lg cursor-pointer ${selection.thirdTryColors[index]}`}>
               <p >{character}</p>
             </div>
             ))
@@ -275,7 +423,7 @@ export default function Home() {
         <div className="w-full h-full flex justify-center gap-1">
           {
           selection.fourthTry.map((character, index)=> (
-            <div key={"fourth" + index} className={`w-10 h-10 flex items-center justify-center rounded-lg cursor-pointer ${color}`}>
+            <div key={"fourth" + index} className={`w-10 h-10 flex items-center justify-center rounded-lg cursor-pointer ${selection.fourthTryColors[index]}`}>
               <p >{character}</p>
             </div>
             ))
@@ -284,7 +432,7 @@ export default function Home() {
         <div className="w-full h-full flex justify-center gap-1">
           {
           selection.fifthTry.map((character, index)=> (
-            <div key={"fifth" + index} className={`w-10 h-10 flex items-center justify-center rounded-lg cursor-pointer ${color}`}>
+            <div key={"fifth" + index} className={`w-10 h-10 flex items-center justify-center rounded-lg cursor-pointer ${selection.fifthTryColors[index]}`}>
               <p >{character}</p>
             </div>
             ))
@@ -293,7 +441,7 @@ export default function Home() {
         <div className="w-full h-full flex justify-center gap-1">
           {
           selection.sixthTry.map((character, index)=> (
-            <div key={"first" + index} className={`w-10 h-10 flex items-center justify-center rounded-lg cursor-pointer ${color}`}>
+            <div key={"first" + index} className={`w-10 h-10 flex items-center justify-center rounded-lg cursor-pointer ${selection.sixthTryColors[index]}`}>
               <p >{character}</p>
             </div>
             ))
