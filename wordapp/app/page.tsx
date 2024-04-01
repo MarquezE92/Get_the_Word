@@ -324,7 +324,17 @@ export default function Home() {
   const handleSelect = (key: string): void => {
     switch(selection.counterTries) {
       case "firstTry": {
-        const position = selection.firstTry.indexOf(" ");
+        let position = selection.firstTry.indexOf(" ");
+        
+        if(key === "delete") {
+          if(position === 0) return
+          if(position === -1) {position = 5}
+          setSelection(prevState => ({
+            ...prevState,
+            firstTry: [...prevState.firstTry.slice(0, position -1), " ", ...prevState.firstTry.slice(position)]
+          }));
+          break;
+        }
         if(position === -1) return console.log('No más lugar')
         setSelection(prevState => ({
           ...prevState,
@@ -333,7 +343,17 @@ export default function Home() {
         break;
       };
       case "secondTry": {
-        const position = selection.secondTry.indexOf(" ");
+        let position = selection.secondTry.indexOf(" ");
+        
+        if(key === "delete") {
+          if(position === 0)return
+          if(position === -1) {position = 5}
+          setSelection(prevState => ({
+            ...prevState,
+            secondTry: [...prevState.secondTry.slice(0, position -1), " ", ...prevState.secondTry.slice(position)]
+          }));
+          break;
+        }
         if(position === -1) return console.log('No más lugar')
         setSelection(prevState => ({
           ...prevState,
@@ -342,7 +362,17 @@ export default function Home() {
         break;
       };
       case "thirdTry": {
-        const position = selection.thirdTry.indexOf(" ");
+        let position = selection.thirdTry.indexOf(" ");
+        
+        if(key === "delete") {
+          if(position === 0)return
+          if(position === -1) {position = 5}
+          setSelection(prevState => ({
+            ...prevState,
+            thirdTry: [...prevState.thirdTry.slice(0, position -1), " ", ...prevState.thirdTry.slice(position)]
+          }));
+          break;
+        }
         if(position === -1) return console.log('No más lugar')
         setSelection(prevState => ({
           ...prevState,
@@ -351,7 +381,16 @@ export default function Home() {
         break;
       };
       case "fourthTry": {
-        const position = selection.fourthTry.indexOf(" ");
+        let position = selection.fourthTry.indexOf(" ");
+        if(key === "delete") {
+          if(position === 0)return
+          if(position === -1) {position = 5}
+          setSelection(prevState => ({
+            ...prevState,
+            fourthTry: [...prevState.fourthTry.slice(0, position -1), " ", ...prevState.fourthTry.slice(position)]
+          }));
+          break;
+        }
         if(position === -1) return console.log('No más lugar')
         setSelection(prevState => ({
           ...prevState,
@@ -360,7 +399,16 @@ export default function Home() {
         break;
       };
       case "fifthTry": {
-        const position = selection.fifthTry.indexOf(" ");
+        let position = selection.fifthTry.indexOf(" ");
+        if(key === "delete") {
+          if(position === 0)return
+          if(position === -1) {position = 5}
+          setSelection(prevState => ({
+            ...prevState,
+            fifthTry: [...prevState.fifthTry.slice(0, position -1), " ", ...prevState.fifthTry.slice(position)]
+          }));
+          break;
+        }
         if(position === -1) return console.log('No más lugar')
         setSelection(prevState => ({
           ...prevState,
@@ -369,7 +417,16 @@ export default function Home() {
         break;
       };
       default: {
-        const position = selection.sixthTry.indexOf(" ");
+        let position = selection.sixthTry.indexOf(" ");
+        if(key === "delete") {
+          if(position === 0)return
+          if(position === -1) {position = 5}
+          setSelection(prevState => ({
+            ...prevState,
+            sixthTry: [...prevState.sixthTry.slice(0, position -1), " ", ...prevState.sixthTry.slice(position)]
+          }));
+          break;
+        }
         if(position === -1) return console.log('No más lugar')
         setSelection(prevState => ({
           ...prevState,
@@ -459,6 +516,9 @@ export default function Home() {
           </div>
           ))
         }
+        <div onClick={()=>handleSelect("delete")} className={`w-20 h-10 flex items-center justify-center rounded-lg cursor-pointer text-white font-bold bg-red-500`}>
+            <p >{"<-"}</p>
+          </div>
       </div>
       
       
