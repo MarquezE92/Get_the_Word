@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { generate, count } from "random-words";
+import Modal from "./components/Modal";
 
 const alphabet = {
   A: "bg-gray-400",
@@ -33,7 +34,10 @@ const alphabet = {
 const arrayAlphabet = Array.from({length: 26}, (_, i) => String.fromCharCode(i + 65));
 let color = "bg-gray-400"
 
-
+interface StateModal {
+  show: boolean;
+  state: "win" | "lose"
+}
 
 interface StateObject {
   colors:object;
@@ -56,6 +60,10 @@ interface StateObject {
 
 export default function Home() {
   
+  const [controlModal, setControlModal] = useState<StateModal>({
+    show: false,
+    state: "win"
+  })
   
   const [selection, setSelection] = useState<StateObject>({
     colors: alphabet,
@@ -75,11 +83,14 @@ export default function Home() {
     sixthTry: [" ", " ", " ", " ", " "]
   });
 
+  const closeModal = ()=> {
+    setControlModal(prevState=>({...prevState, show: false}))
+  }
 
   const handleTry = ()=> {
     if(selection.counterTries === "sixthTry") {
       if(selection.sixthTry.join("") === selection.word.join("")) {
-        return window.alert(`Congrats! The secret word was ${selection.word.join("")}`)
+        return setControlModal(prevState=>({...prevState, show: true}))
       } else {
         return window.alert(`Ooops! The secret word was ${selection.word.join("")}, better luck next time`)
       }
@@ -87,7 +98,7 @@ export default function Home() {
     let updatedColors = { ...selection.colors };
 
     if(selection.fifthTry[4] !== " ") { 
-      if(selection.fifthTry.join("") === selection.word.join("")) return window.alert(`Congrats! The secret word was ${selection.word.join("")}`)
+      if(selection.fifthTry.join("") === selection.word.join("")) return setControlModal(prevState=>({...prevState, show: true}))
       for(let letter in selection.fifthTry) {
         let char = selection.fifthTry[letter]
 
@@ -135,7 +146,7 @@ export default function Home() {
       colors: updatedColors
     }))
     } else if(selection.fourthTry[4] !== " ") { 
-      if(selection.fourthTry.join("") === selection.word.join("")) return window.alert(`Congrats! The secret word was ${selection.word.join("")}`)
+      if(selection.fourthTry.join("") === selection.word.join("")) return setControlModal(prevState=>({...prevState, show: true}))
       for(let letter in selection.fourthTry) {
         let char = selection.fourthTry[letter]
 
@@ -180,7 +191,7 @@ export default function Home() {
       colors: updatedColors
     }))
     } else if(selection.thirdTry[4] !== " ") { 
-      if(selection.thirdTry.join("") === selection.word.join("")) return window.alert(`Congrats! The secret word was ${selection.word.join("")}`)
+      if(selection.thirdTry.join("") === selection.word.join("")) return setControlModal(prevState=>({...prevState, show: true}))
       for(let letter in selection.thirdTry) {
         let char = selection.thirdTry[letter]
 
@@ -226,7 +237,7 @@ export default function Home() {
       colors: updatedColors
     }))
     } else if(selection.secondTry[4] !== " ") { 
-      if(selection.secondTry.join("") === selection.word.join("")) return window.alert(`Congrats! The secret word was ${selection.word.join("")}`)
+      if(selection.secondTry.join("") === selection.word.join("")) return setControlModal(prevState=>({...prevState, show: true}))
       for(let letter in selection.secondTry) {
         let char = selection.secondTry[letter]
 
@@ -273,7 +284,7 @@ export default function Home() {
       colors: updatedColors
     }))
     } else if(selection.firstTry[4] !== " "){ 
-      if(selection.firstTry.join("") === selection.word.join("")) return window.alert(`Congrats! The secret word was ${selection.word.join("")}`)
+      
       for(let letter in selection.firstTry) {
         let char = selection.firstTry[letter]
 
@@ -312,7 +323,8 @@ export default function Home() {
           }));
         }
         } 
-
+    if(selection.firstTry.join("") === selection.word.join("")){ 
+          return setControlModal(prevState=>({...prevState, show: true}))}
     setSelection(prevState=> ({
       ...prevState,
       counterTries: "secondTry",
@@ -447,7 +459,8 @@ export default function Home() {
     },[])
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+    <>
+      <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <h1 className="text-blue-500">Get the word</h1>
       <div className="w-full h-full flex flex-col justify-center gap-3">
         <div className="w-full h-full flex justify-center gap-1">
@@ -520,10 +533,9 @@ export default function Home() {
             <p >{"<-"}</p>
           </div>
       </div>
-      
-      
-        
-      
+ 
     </main>
+    <Modal word={selection.word.join("")} show={controlModal.show} type={controlModal.state} closeModal={closeModal} />
+    </>
   );
 }
