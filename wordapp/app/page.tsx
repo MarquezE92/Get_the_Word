@@ -88,17 +88,68 @@ export default function Home() {
   }
 
   const handleTry = ()=> {
+    let updatedColors = { ...selection.colors };
     if(selection.counterTries === "sixthTry") {
+      if(selection.sixthTry[4] !== " ") { 
+      
+        for(let letter in selection.sixthTry) {
+          let char = selection.sixthTry[letter]
+  
+          if(selection.word[letter] === char) {
+            updatedColors[char] = "bg-green-400"
+            setSelection(prevState => ({
+              ...prevState,
+              sixthTryColors: [
+                ...prevState.sixthTryColors.slice(0, letter),
+                "bg-green-400",
+                ...prevState.sixthTryColors.slice(letter + 1)
+              ]
+            }));
+            
+          } else if(selection.word.includes(char) ) {
+            setSelection(prevState => ({
+              ...prevState,
+              sixthTryColors: [
+                ...prevState.sixthTryColors.slice(0, letter),
+                "bg-orange-400",
+                ...prevState.sixthTryColors.slice(letter + 1)
+              ]
+            }));
+  
+            if(updatedColors[char] !== "bg-green-400" ) {
+              updatedColors[char] ="bg-orange-400"
+            }
+          
+            } else {
+              setSelection(prevState => ({
+                ...prevState,
+                sixthTryColors: [
+                  ...prevState.sixthTryColors.slice(0, letter),
+                  "bg-gray-600",
+                  ...prevState.sixthTryColors.slice(letter + 1)
+                ]
+              }));
+              updatedColors[char] ="bg-gray-600"
+            }
+          
+        }
+        
+        setSelection(prevState=> ({
+        ...prevState,
+        counterTries: "No more tries",
+        colors: updatedColors
+      }))
+    }
       if(selection.sixthTry.join("") === selection.word.join("")) {
         return setControlModal(prevState=>({...prevState, show: true}))
       } else {
-        return window.alert(`Ooops! The secret word was ${selection.word.join("")}, better luck next time`)
+        return setControlModal(prevState=>({state:"lose", show: true}))
       }
     }
-    let updatedColors = { ...selection.colors };
+    
 
     if(selection.fifthTry[4] !== " ") { 
-      if(selection.fifthTry.join("") === selection.word.join("")) return setControlModal(prevState=>({...prevState, show: true}))
+      
       for(let letter in selection.fifthTry) {
         let char = selection.fifthTry[letter]
 
@@ -140,11 +191,14 @@ export default function Home() {
           }
         
       }
+      
       setSelection(prevState=> ({
       ...prevState,
       counterTries: "sixthTry",
       colors: updatedColors
     }))
+    if(selection.fifthTry.join("") === selection.word.join("")) return setControlModal(prevState=>({...prevState, show: true}))
+
     } else if(selection.fourthTry[4] !== " ") { 
       if(selection.fourthTry.join("") === selection.word.join("")) return setControlModal(prevState=>({...prevState, show: true}))
       for(let letter in selection.fourthTry) {
@@ -428,7 +482,7 @@ export default function Home() {
         }));
         break;
       };
-      default: {
+      case "sixthTry": {
         let position = selection.sixthTry.indexOf(" ");
         if(key === "delete") {
           if(position === 0)return
@@ -445,6 +499,9 @@ export default function Home() {
           sixthTry: [...prevState.sixthTry.slice(0, position), key, ...prevState.sixthTry.slice(position+1)]
         }));
       };
+      default:{
+        console.log("The game is over")
+      }
       }
 
     }
