@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { generate, count } from "random-words";
 import Modal from "./components/Modal";
 
+
 const alphabet = {
   A: "bg-gray-400",
   B: "bg-gray-400",
@@ -85,6 +86,26 @@ export default function Home() {
 
   const closeModal = ()=> {
     setControlModal(prevState=>({...prevState, show: false}))
+  }
+
+  const handleReset = ()=> {
+    setSelection(prevState => ({
+      colors: alphabet,
+      word: generate({ minLength: 5, maxLength: 5 }).toUpperCase().split(""),
+      counterTries: "firstTry",
+      firstTry: [" ", " ", " ", " ", " "],
+      firstTryColors: ["bg-gray-400", "bg-gray-400", "bg-gray-400", "bg-gray-400", "bg-gray-400"],
+      secondTryColors: ["bg-gray-400", "bg-gray-400", "bg-gray-400", "bg-gray-400", "bg-gray-400"],
+      thirdTryColors: ["bg-gray-400", "bg-gray-400", "bg-gray-400", "bg-gray-400", "bg-gray-400"],
+      fourthTryColors: ["bg-gray-400", "bg-gray-400", "bg-gray-400", "bg-gray-400", "bg-gray-400"],
+      fifthTryColors: ["bg-gray-400", "bg-gray-400", "bg-gray-400", "bg-gray-400", "bg-gray-400"],
+      sixthTryColors: ["bg-gray-400", "bg-gray-400", "bg-gray-400", "bg-gray-400", "bg-gray-400"],
+      secondTry: [" ", " ", " ", " ", " "],
+      thirdTry: [" ", " ", " ", " ", " "],
+      fourthTry: [" ", " ", " ", " ", " "],
+      fifthTry: [" ", " ", " ", " ", " "],
+      sixthTry: [" ", " ", " ", " ", " "]
+    }))
   }
 
   const handleTry = ()=> {
@@ -577,6 +598,9 @@ export default function Home() {
       </div>
 
       <button onClick={handleTry}>Try!</button>
+      <button onClick={handleReset}>
+          <img src="../changeIcon.svg"/>
+      </button>
         
       <div className="w-full h-full flex justify-center gap-1">
         {
