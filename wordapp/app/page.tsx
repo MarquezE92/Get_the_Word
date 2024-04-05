@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { generate, count } from "random-words";
 import Modal from "./components/Modal";
+import ModalInfo from "./components/ModalInfo";
 
 
 const alphabet = {
@@ -39,6 +40,9 @@ interface StateModal {
   show: boolean;
   state: "win" | "lose"
 }
+interface StateShowInfo {
+  show: boolean
+}
 
 interface StateObject {
   colors:object;
@@ -65,6 +69,9 @@ export default function Home() {
     show: false,
     state: "win"
   })
+  const [controlModalInfo, setControlModalInfo] = useState<StateShowInfo>({
+    show: false
+  })
   
   const [selection, setSelection] = useState<StateObject>({
     colors: alphabet,
@@ -86,6 +93,9 @@ export default function Home() {
 
   const closeModal = ()=> {
     setControlModal(prevState=>({...prevState, show: false}))
+  }
+  const closeModalInfo = ()=> {
+    setControlModalInfo({show: false})
   }
 
   const handleReset = ()=> {
@@ -539,7 +549,7 @@ export default function Home() {
   return (
     <>
       <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <h1 className="text-blue-500">Get the word</h1>
+      <h1 className="text-blue-500">Get the word <span onClick={()=>setControlModalInfo({show:true})}>?</span></h1>
       <div className="w-full h-full flex flex-col justify-center gap-3">
         <div className="w-full h-full flex justify-center gap-1">
           {
@@ -617,6 +627,7 @@ export default function Home() {
  
     </main>
     <Modal word={selection.word.join("")} show={controlModal.show} type={controlModal.state} closeModal={closeModal} />
+    <ModalInfo show={controlModalInfo.show} closeModal={closeModalInfo} />
     </>
   );
 }
