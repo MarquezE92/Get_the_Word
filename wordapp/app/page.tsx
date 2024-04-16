@@ -73,22 +73,22 @@ export default function Home() {
     show: false
   })
   
-  const [selection, setSelection] = useState<StateObject>({
-    colors: alphabet,
-    word: ["p", "r", "u", "e", "b"],
-    counterTries: "firstTry",
-    firstTry: [" ", " ", " ", " ", " "],
-    firstTryColors: ["bg-gray-400", "bg-gray-400", "bg-gray-400", "bg-gray-400", "bg-gray-400"],
-    secondTryColors: ["bg-gray-400", "bg-gray-400", "bg-gray-400", "bg-gray-400", "bg-gray-400"],
-    thirdTryColors: ["bg-gray-400", "bg-gray-400", "bg-gray-400", "bg-gray-400", "bg-gray-400"],
-    fourthTryColors: ["bg-gray-400", "bg-gray-400", "bg-gray-400", "bg-gray-400", "bg-gray-400"],
-    fifthTryColors: ["bg-gray-400", "bg-gray-400", "bg-gray-400", "bg-gray-400", "bg-gray-400"],
-    sixthTryColors: ["bg-gray-400", "bg-gray-400", "bg-gray-400", "bg-gray-400", "bg-gray-400"],
-    secondTry: [" ", " ", " ", " ", " "],
-    thirdTry: [" ", " ", " ", " ", " "],
-    fourthTry: [" ", " ", " ", " ", " "],
-    fifthTry: [" ", " ", " ", " ", " "],
-    sixthTry: [" ", " ", " ", " ", " "]
+  const [selection, setSelection] = useState({
+    "colors": alphabet,
+    "word": ["p", "r", "u", "e", "b"],
+    "counterTries": "firstTry",
+    "firstTry": [" ", " ", " ", " ", " "],
+    "firstTryColors": ["bg-gray-400", "bg-gray-400", "bg-gray-400", "bg-gray-400", "bg-gray-400"],
+    "secondTryColors": ["bg-gray-400", "bg-gray-400", "bg-gray-400", "bg-gray-400", "bg-gray-400"],
+    "thirdTryColors": ["bg-gray-400", "bg-gray-400", "bg-gray-400", "bg-gray-400", "bg-gray-400"],
+    "fourthTryColors": ["bg-gray-400", "bg-gray-400", "bg-gray-400", "bg-gray-400", "bg-gray-400"],
+    "fifthTryColors": ["bg-gray-400", "bg-gray-400", "bg-gray-400", "bg-gray-400", "bg-gray-400"],
+    "sixthTryColors": ["bg-gray-400", "bg-gray-400", "bg-gray-400", "bg-gray-400", "bg-gray-400"],
+    "secondTry": [" ", " ", " ", " ", " "],
+    "thirdTry": [" ", " ", " ", " ", " "],
+    "fourthTry": [" ", " ", " ", " ", " "],
+    "fifthTry": [" ", " ", " ", " ", " "],
+    "sixthTry": [" ", " ", " ", " ", " "]
   });
 
   const closeModal = ()=> {
@@ -98,110 +98,73 @@ export default function Home() {
     setControlModalInfo({show: false})
   }
 
+  const llamadoDic = async (word) => {
+    try {
+      const resp = await fetch("https://api.dictionaryapi.dev/api/v2/entries/en/" + word);
+      if (resp.status === 200) {
+        return true; // La palabra existe
+      } else {
+        return false; // La palabra no existe
+      }
+    } catch (error) {
+      throw new Error("Oops, try again"); // Captura y lanza el error
+    }
+  }
+
   const handleReset = ()=> {
     setSelection(prevState => ({
       colors: alphabet,
       word: generate({ minLength: 5, maxLength: 5 }).toUpperCase().split(""),
       counterTries: "firstTry",
-      firstTry: [" ", " ", " ", " ", " "],
+      "firstTry": [" ", " ", " ", " ", " "],
       firstTryColors: ["bg-gray-400", "bg-gray-400", "bg-gray-400", "bg-gray-400", "bg-gray-400"],
       secondTryColors: ["bg-gray-400", "bg-gray-400", "bg-gray-400", "bg-gray-400", "bg-gray-400"],
       thirdTryColors: ["bg-gray-400", "bg-gray-400", "bg-gray-400", "bg-gray-400", "bg-gray-400"],
       fourthTryColors: ["bg-gray-400", "bg-gray-400", "bg-gray-400", "bg-gray-400", "bg-gray-400"],
       fifthTryColors: ["bg-gray-400", "bg-gray-400", "bg-gray-400", "bg-gray-400", "bg-gray-400"],
       sixthTryColors: ["bg-gray-400", "bg-gray-400", "bg-gray-400", "bg-gray-400", "bg-gray-400"],
-      secondTry: [" ", " ", " ", " ", " "],
-      thirdTry: [" ", " ", " ", " ", " "],
-      fourthTry: [" ", " ", " ", " ", " "],
-      fifthTry: [" ", " ", " ", " ", " "],
-      sixthTry: [" ", " ", " ", " ", " "]
+      "secondTry": [" ", " ", " ", " ", " "],
+      "thirdTry": [" ", " ", " ", " ", " "],
+      "fourthTry": [" ", " ", " ", " ", " "],
+      "fifthTry": [" ", " ", " ", " ", " "],
+      "sixthTry": [" ", " ", " ", " ", " "]
     }))
   }
 
-  const handleTry = ()=> {
-    let updatedColors = { ...selection.colors };
-    if(selection.counterTries === "sixthTry") {
-      if(selection.sixthTry[4] !== " ") { 
-      
-        for(let letter in selection.sixthTry) {
-          let char = selection.sixthTry[letter]
-  
-          if(selection.word[letter] === char) {
-            updatedColors[char] = "bg-green-400"
-            setSelection(prevState => ({
-              ...prevState,
-              sixthTryColors: [
-                ...prevState.sixthTryColors.slice(0, letter),
-                "bg-green-400",
-                ...prevState.sixthTryColors.slice(letter + 1)
-              ]
-            }));
-            
-          } else if(selection.word.includes(char) ) {
-            setSelection(prevState => ({
-              ...prevState,
-              sixthTryColors: [
-                ...prevState.sixthTryColors.slice(0, letter),
-                "bg-orange-400",
-                ...prevState.sixthTryColors.slice(letter + 1)
-              ]
-            }));
-  
-            if(updatedColors[char] !== "bg-green-400" ) {
-              updatedColors[char] ="bg-orange-400"
-            }
-          
-            } else {
-              setSelection(prevState => ({
-                ...prevState,
-                sixthTryColors: [
-                  ...prevState.sixthTryColors.slice(0, letter),
-                  "bg-gray-600",
-                  ...prevState.sixthTryColors.slice(letter + 1)
-                ]
-              }));
-              updatedColors[char] ="bg-gray-600"
-            }
-          
-        }
-        
-        setSelection(prevState=> ({
-        ...prevState,
-        counterTries: "No more tries",
-        colors: updatedColors
-      }))
-    }
-      if(selection.sixthTry.join("") === selection.word.join("")) {
-        return setControlModal(prevState=>({...prevState, show: true}))
-      } else {
-        return setControlModal(prevState=>({state:"lose", show: true}))
-      }
-    }
-    
+  const tryTracker = {
+    "firstTry":"secondTry",
+    "secondTry":"thirdTry",
+    "thirdTry":"fourthTry",
+    "fourthTry": "fifthTry",
+    "fifthTry":"sixthTry",
+    "sixthTry": "No more tries"
+  }
 
-    if(selection.fifthTry[4] !== " ") { 
-      
-      for(let letter in selection.fifthTry) {
-        let char = selection.fifthTry[letter]
+  const handleTry = ()=>{
+    let updatedColors = { ...selection.colors };
+    const selectedletters = selection[selection.counterTries]
+    if(selectedletters[4] !== " "){
+      for(let letter in selectedletters) {
+        let char = selectedletters[letter]
 
         if(selection.word[letter] === char) {
           updatedColors[char] = "bg-green-400"
           setSelection(prevState => ({
             ...prevState,
-            fifthTryColors: [
-              ...prevState.fifthTryColors.slice(0, letter),
+            [`${selection.counterTries}Colors`]: [
+              ...prevState[`${selection.counterTries}Colors`].slice(0, letter),
               "bg-green-400",
-              ...prevState.fifthTryColors.slice(letter + 1)
+              ...prevState[`${selection.counterTries}Colors`].slice(letter + 1)
             ]
           }));
           
         } else if(selection.word.includes(char) ) {
           setSelection(prevState => ({
             ...prevState,
-            fifthTryColors: [
-              ...prevState.fifthTryColors.slice(0, letter),
+            [`${selection.counterTries}Colors`]: [
+              ...prevState[`${selection.counterTries}Colors`].slice(0, letter),
               "bg-orange-400",
-              ...prevState.fifthTryColors.slice(letter + 1)
+              ...prevState[`${selection.counterTries}Colors`].slice(letter + 1)
             ]
           }));
 
@@ -212,10 +175,10 @@ export default function Home() {
           } else {
             setSelection(prevState => ({
               ...prevState,
-              fifthTryColors: [
-                ...prevState.fifthTryColors.slice(0, letter),
+              [`${selection.counterTries}Colors`]: [
+                ...prevState[`${selection.counterTries}Colors`].slice(0, letter),
                 "bg-gray-600",
-                ...prevState.fifthTryColors.slice(letter + 1)
+                ...prevState[`${selection.counterTries}Colors`].slice(letter + 1)
               ]
             }));
             updatedColors[char] ="bg-gray-600"
@@ -225,198 +188,16 @@ export default function Home() {
       
       setSelection(prevState=> ({
       ...prevState,
-      counterTries: "sixthTry",
+      counterTries: tryTracker[selection.counterTries],
       colors: updatedColors
     }))
-    if(selection.fifthTry.join("") === selection.word.join("")) return setControlModal(prevState=>({...prevState, show: true}))
-
-    } else if(selection.fourthTry[4] !== " ") { 
-      if(selection.fourthTry.join("") === selection.word.join("")) return setControlModal(prevState=>({...prevState, show: true}))
-      for(let letter in selection.fourthTry) {
-        let char = selection.fourthTry[letter]
-
-        if(selection.word[letter] === char) {
-          updatedColors[char] = "bg-green-400"
-          setSelection(prevState => ({
-            ...prevState,
-            fourthTryColors: [
-              ...prevState.fourthTryColors.slice(0, letter),
-              "bg-green-400",
-              ...prevState.fourthTryColors.slice(letter + 1)
-            ]
-          }));
-          
-        } else if(selection.word.includes(char)) {
-          setSelection(prevState => ({
-            ...prevState,
-            fourthTryColors: [
-              ...prevState.fourthTryColors.slice(0, letter),
-              "bg-orange-400",
-              ...prevState.fourthTryColors.slice(letter + 1)
-            ]
-          }));
-          if(updatedColors[char] !== "bg-green-400"){
-          updatedColors[char] ="bg-orange-400"} 
-        } else {
-          setSelection(prevState => ({
-            ...prevState,
-            fourthTryColors: [
-              ...prevState.fourthTryColors.slice(0, letter),
-              "bg-gray-600",
-              ...prevState.fourthTryColors.slice(letter + 1)
-            ]
-          }));
-          updatedColors[char] ="bg-gray-600"
-        }
-        
-      }
-      setSelection(prevState=> ({
-      ...prevState,
-      counterTries: "fifthTry",
-      colors: updatedColors
-    }))
-    } else if(selection.thirdTry[4] !== " ") { 
-      if(selection.thirdTry.join("") === selection.word.join("")) return setControlModal(prevState=>({...prevState, show: true}))
-      for(let letter in selection.thirdTry) {
-        let char = selection.thirdTry[letter]
-
-        if(selection.word[letter] === char) {
-          setSelection(prevState => ({
-            ...prevState,
-            thirdTryColors: [
-              ...prevState.thirdTryColors.slice(0, letter),
-              "bg-green-400",
-              ...prevState.thirdTryColors.slice(letter + 1)
-            ]
-          }));
-          updatedColors[char] = "bg-green-400"
-          
-        } else if(selection.word.includes(char))  {
-          setSelection(prevState => ({
-            ...prevState,
-            thirdTryColors: [
-              ...prevState.thirdTryColors.slice(0, letter),
-              "bg-orange-400",
-              ...prevState.thirdTryColors.slice(letter + 1)
-            ]
-          }));
-          if(updatedColors[char] !== "bg-green-400") {
-            updatedColors[char] ="bg-orange-400"
-          }
-       } else {
-        setSelection(prevState => ({
-          ...prevState,
-          thirdTryColors: [
-            ...prevState.thirdTryColors.slice(0, letter),
-            "bg-gray-600",
-            ...prevState.thirdTryColors.slice(letter + 1)
-          ]
-        }));
-        updatedColors[char] ="bg-gray-600"
-       }
-        
-      }
-      setSelection(prevState=> ({
-      ...prevState,
-      counterTries: "fourthTry",
-      colors: updatedColors
-    }))
-    } else if(selection.secondTry[4] !== " ") { 
-      if(selection.secondTry.join("") === selection.word.join("")) return setControlModal(prevState=>({...prevState, show: true}))
-      for(let letter in selection.secondTry) {
-        let char = selection.secondTry[letter]
-
-        if(selection.word[letter] === char) {
-          updatedColors[char] = "bg-green-400"
-          setSelection(prevState => ({
-            ...prevState,
-            secondTryColors: [
-              ...prevState.secondTryColors.slice(0, letter),
-              "bg-green-400",
-              ...prevState.secondTryColors.slice(letter + 1)
-            ]
-          }));
-          
-        } else if(selection.word.includes(char) ) {
-          setSelection(prevState => ({
-            ...prevState,
-            secondTryColors: [
-              ...prevState.secondTryColors.slice(0, letter),
-              "bg-orange-400",
-              ...prevState.secondTryColors.slice(letter + 1)
-            ]
-          }));
-          if(updatedColors[char] !== "bg-green-400") {
-            updatedColors[char] ="bg-orange-400"
-            }
-          } else {
-            updatedColors[char] ="bg-gray-600";
-            setSelection(prevState => ({
-              ...prevState,
-              secondTryColors: [
-                ...prevState.secondTryColors.slice(0, letter),
-                "bg-gray-600",
-                ...prevState.secondTryColors.slice(letter + 1)
-              ]
-            }))
-          }
-        
-      }
-
-      setSelection(prevState=> ({
-      ...prevState,
-      counterTries: "thirdTry",
-      colors: updatedColors
-    }))
-    } else if(selection.firstTry[4] !== " "){ 
-      
-      for(let letter in selection.firstTry) {
-        let char = selection.firstTry[letter]
-
-        if(selection.word[letter] === char) {
-          updatedColors[char] = "bg-green-400"
-          setSelection(prevState => ({
-            ...prevState,
-            firstTryColors: [
-              ...prevState.firstTryColors.slice(0, letter),
-              "bg-green-400",
-              ...prevState.firstTryColors.slice(letter + 1)
-            ]
-          }));
-          
-        } else if(selection.word.includes(char)) {
-          setSelection(prevState => ({
-            ...prevState,
-            firstTryColors: [
-              ...prevState.firstTryColors.slice(0, letter),
-              "bg-orange-400",
-              ...prevState.firstTryColors.slice(letter + 1)
-            ]
-          }));
-
-          if(updatedColors[char] !== "bg-green-400"){
-          updatedColors[char] ="bg-orange-400"}
-        } else {
-          updatedColors[char] ="bg-gray-600";
-          setSelection(prevState => ({
-            ...prevState,
-            firstTryColors: [
-              ...prevState.firstTryColors.slice(0, letter),
-              "bg-gray-600",
-              ...prevState.firstTryColors.slice(letter + 1)
-            ]
-          }));
-        }
-        } 
-    if(selection.firstTry.join("") === selection.word.join("")){ 
-          return setControlModal(prevState=>({...prevState, show: true}))}
-    setSelection(prevState=> ({
-      ...prevState,
-      counterTries: "secondTry",
-      colors: updatedColors
-    }))
-    }  
+  }
+    if(selection[selection.counterTries].join("") === selection.word.join("")) {
+      return setControlModal(prevState=>({...prevState, show: true}))
+    } else if(selection.counterTries === "sixthTry") {
+      return setControlModal(prevState=>({state:"lose", show: true}))
     }
+  }
 
   const handleSelect = (key: string): void => {
     switch(selection.counterTries) {
