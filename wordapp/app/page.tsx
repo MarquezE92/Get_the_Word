@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { generate, count } from "random-words";
 import Modal from "./components/Modal";
+import { Toaster, toast } from "sonner";
 import ModalInfo from "./components/ModalInfo";
 
 
@@ -98,12 +99,14 @@ export default function Home() {
     setControlModalInfo({show: false})
   }
 
-  const llamadoDic = async (word) => {
+  const dicCall = async (word:string) => {
     try {
       const resp = await fetch("https://api.dictionaryapi.dev/api/v2/entries/en/" + word);
       if (resp.status === 200) {
+       // console.log('existe')
         return true; // La palabra existe
       } else {
+        //console.log('No existe')
         return false; // La palabra no existe
       }
     } catch (error) {
@@ -140,9 +143,18 @@ export default function Home() {
     "sixthTry": "No more tries"
   }
 
-  const handleTry = ()=>{
+  const handleTry = async()=>{
     let updatedColors = { ...selection.colors };
     const selectedletters = selection[selection.counterTries]
+    const wordselected = selectedletters.join("")
+    const response = await dicCall(wordselected)
+    if(!response) {
+      setSelection(prevState=> ({
+        ...prevState,
+        [selection.counterTries] : [" ", " ", " ", " ", " "]
+      }))
+      return toast.error(`${wordselected} is not a valid word`)
+    }
     if(selectedletters[4] !== " "){
       for(let letter in selectedletters) {
         let char = selectedletters[letter]
@@ -192,7 +204,7 @@ export default function Home() {
       colors: updatedColors
     }))
   }
-    if(selection[selection.counterTries].join("") === selection.word.join("")) {
+    if(wordselected === selection.word.join("")) {
       return setControlModal(prevState=>({...prevState, show: true}))
     } else if(selection.counterTries === "sixthTry") {
       return setControlModal(prevState=>({state:"lose", show: true}))
@@ -409,6 +421,7 @@ export default function Home() {
     </main>
     <Modal word={selection.word.join("")} show={controlModal.show} type={controlModal.state} closeModal={closeModal} />
     <ModalInfo show={controlModalInfo.show} closeModal={closeModalInfo} />
+    <Toaster richColors position="top-center" />
     </>
   );
 }

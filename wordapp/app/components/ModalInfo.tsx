@@ -1,3 +1,6 @@
+import { useState } from "react";
+
+
 interface modalProps {
     show: boolean;
     closeModal: ()=>void
@@ -9,6 +12,7 @@ const ModalInfo = ({ show, closeModal}: modalProps)=> {
             closeModal()
         }
     };
+    
 
     return(
         <div onClick={handleBackdropClick} className={show?"fixed top-0 left-0 w-full h-full bg-black bg-opacity-30 z-50 flex items-center justify-center" : "hidden"}>
@@ -26,7 +30,8 @@ const ModalInfo = ({ show, closeModal}: modalProps)=> {
                     <li>Gray: Letter not in the word.</li>
                 </ul>
                 <p>3. You have six attempts to guess the word.</p>
-                <p>4. Use the feedback to refine your guesses and deduce the correct word.</p>
+                <p>4. Use the feedback to refine your guesses and deduce the correct word.</p>               
+                
             </div>
             
         </div>
