@@ -16,7 +16,7 @@ const ModalInfo = ({ show, closeModal}: modalProps)=> {
 
     return(
         <div onClick={handleBackdropClick} className={show?"fixed top-0 left-0 w-full h-full bg-black bg-opacity-30 z-50 flex items-center justify-center" : "hidden"}>
-            <div className="w-1/3 h-fit rounded-lg p-6 flex flex-col space-y-4 items-center justify-center bg-white">
+            <div className="md:w-1/3 w-3/4 h-3/4 md:h-fit overflow-auto rounded-lg p-6 flex flex-col space-y-4 items-center justify-center bg-white">
                 <h1 className="text-3xl font-bold">What is this game?</h1>
                 <p className="text-lg">This is a version for educational purposes of the original Wordle game owned by The New York Times. For the original game, visit: <a href="https://www.nytimes.com/games/wordle/index.html" className="text-blue-400">Wordle on The New York Times</a>.</p>
                 <h2 className="text-2xl self-start">Objective:</h2>

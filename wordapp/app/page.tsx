@@ -4,35 +4,36 @@ import { generate, count } from "random-words";
 import Modal from "./components/Modal";
 import { Toaster, toast } from "sonner";
 import ModalInfo from "./components/ModalInfo";
+import "./loader.css"
 
 
 const alphabet = {
-  A: "bg-gray-400",
-  B: "bg-gray-400",
-  C: "bg-gray-400",
-  D: "bg-gray-400",
-  E: "bg-gray-400",
-  F: "bg-gray-400",
-  G: "bg-gray-400",
-  H: "bg-gray-400",
-  I: "bg-gray-400",
-  J: "bg-gray-400",
-  K: "bg-gray-400",
-  L: "bg-gray-400",
-  M: "bg-gray-400",
-  N: "bg-gray-400",
-  O: "bg-gray-400",
-  P: "bg-gray-400",
-  Q: "bg-gray-400",
-  R: "bg-gray-400",
-  S: "bg-gray-400",
-  T: "bg-gray-400",
-  U: "bg-gray-400",
-  V: "bg-gray-400",
-  W: "bg-gray-400",
-  X: "bg-gray-400",
-  Y: "bg-gray-400",
-  Z: "bg-gray-400",
+  A: "",
+  B: "",
+  C: "",
+  D: "",
+  E: "",
+  F: "",
+  G: "",
+  H: "",
+  I: "",
+  J: "",
+  K: "",
+  L: "",
+  M: "",
+  N: "",
+  O: "",
+  P: "",
+  Q: "",
+  R: "",
+  S: "",
+  T: "",
+  U: "",
+  V: "",
+  W: "",
+  X: "",
+  Y: "",
+  Z: "",
 }
 const arrayAlphabet = Array.from({length: 26}, (_, i) => String.fromCharCode(i + 65));
 let color = "bg-gray-400"
@@ -73,18 +74,19 @@ export default function Home() {
   const [controlModalInfo, setControlModalInfo] = useState<StateShowInfo>({
     show: false
   })
-  
+  const [isLoading, setIsLoading] = useState(false)
+  const colorBlock = "border border-gray-400 bg-white"
   const [selection, setSelection] = useState({
     "colors": alphabet,
     "word": ["p", "r", "u", "e", "b"],
     "counterTries": "firstTry",
     "firstTry": [" ", " ", " ", " ", " "],
-    "firstTryColors": ["bg-gray-400", "bg-gray-400", "bg-gray-400", "bg-gray-400", "bg-gray-400"],
-    "secondTryColors": ["bg-gray-400", "bg-gray-400", "bg-gray-400", "bg-gray-400", "bg-gray-400"],
-    "thirdTryColors": ["bg-gray-400", "bg-gray-400", "bg-gray-400", "bg-gray-400", "bg-gray-400"],
-    "fourthTryColors": ["bg-gray-400", "bg-gray-400", "bg-gray-400", "bg-gray-400", "bg-gray-400"],
-    "fifthTryColors": ["bg-gray-400", "bg-gray-400", "bg-gray-400", "bg-gray-400", "bg-gray-400"],
-    "sixthTryColors": ["bg-gray-400", "bg-gray-400", "bg-gray-400", "bg-gray-400", "bg-gray-400"],
+    "firstTryColors": [colorBlock, colorBlock, colorBlock, colorBlock, colorBlock],
+    "secondTryColors": [colorBlock, colorBlock, colorBlock, colorBlock, colorBlock],
+    "thirdTryColors": [colorBlock, colorBlock, colorBlock, colorBlock, colorBlock],
+    "fourthTryColors": [colorBlock, colorBlock, colorBlock, colorBlock, colorBlock],
+    "fifthTryColors": [colorBlock, colorBlock, colorBlock, colorBlock, colorBlock],
+    "sixthTryColors": [colorBlock, colorBlock, colorBlock, colorBlock, colorBlock],
     "secondTry": [" ", " ", " ", " ", " "],
     "thirdTry": [" ", " ", " ", " ", " "],
     "fourthTry": [" ", " ", " ", " ", " "],
@@ -120,12 +122,12 @@ export default function Home() {
       word: generate({ minLength: 5, maxLength: 5 }).toUpperCase().split(""),
       counterTries: "firstTry",
       "firstTry": [" ", " ", " ", " ", " "],
-      firstTryColors: ["bg-gray-400", "bg-gray-400", "bg-gray-400", "bg-gray-400", "bg-gray-400"],
-      secondTryColors: ["bg-gray-400", "bg-gray-400", "bg-gray-400", "bg-gray-400", "bg-gray-400"],
-      thirdTryColors: ["bg-gray-400", "bg-gray-400", "bg-gray-400", "bg-gray-400", "bg-gray-400"],
-      fourthTryColors: ["bg-gray-400", "bg-gray-400", "bg-gray-400", "bg-gray-400", "bg-gray-400"],
-      fifthTryColors: ["bg-gray-400", "bg-gray-400", "bg-gray-400", "bg-gray-400", "bg-gray-400"],
-      sixthTryColors: ["bg-gray-400", "bg-gray-400", "bg-gray-400", "bg-gray-400", "bg-gray-400"],
+      firstTryColors: [colorBlock, colorBlock, colorBlock, colorBlock, colorBlock],
+      secondTryColors: [colorBlock, colorBlock, colorBlock, colorBlock, colorBlock],
+      thirdTryColors: [colorBlock, colorBlock, colorBlock, colorBlock, colorBlock],
+      fourthTryColors: [colorBlock, colorBlock, colorBlock, colorBlock, colorBlock],
+      fifthTryColors: [colorBlock, colorBlock, colorBlock, colorBlock, colorBlock],
+      sixthTryColors: [colorBlock, colorBlock, colorBlock, colorBlock, colorBlock],
       "secondTry": [" ", " ", " ", " ", " "],
       "thirdTry": [" ", " ", " ", " ", " "],
       "fourthTry": [" ", " ", " ", " ", " "],
@@ -144,6 +146,7 @@ export default function Home() {
   }
 
   const handleTry = async()=>{
+    setIsLoading(true)
     let updatedColors = { ...selection.colors };
     const selectedletters = selection[selection.counterTries]
     const wordselected = selectedletters.join("")
@@ -153,19 +156,21 @@ export default function Home() {
         ...prevState,
         [selection.counterTries] : [" ", " ", " ", " ", " "]
       }))
+      setIsLoading(false);
       return toast.error(`${wordselected} is not a valid word`)
+
     }
     if(selectedletters[4] !== " "){
       for(let letter in selectedletters) {
         let char = selectedletters[letter]
 
         if(selection.word[letter] === char) {
-          updatedColors[char] = "bg-green-400"
+          updatedColors[char] = "bg-green-400 text-white"
           setSelection(prevState => ({
             ...prevState,
             [`${selection.counterTries}Colors`]: [
               ...prevState[`${selection.counterTries}Colors`].slice(0, letter),
-              "bg-green-400",
+              "bg-green-400 text-white",
               ...prevState[`${selection.counterTries}Colors`].slice(letter + 1)
             ]
           }));
@@ -175,13 +180,13 @@ export default function Home() {
             ...prevState,
             [`${selection.counterTries}Colors`]: [
               ...prevState[`${selection.counterTries}Colors`].slice(0, letter),
-              "bg-orange-400",
+              "bg-orange-400 text-white",
               ...prevState[`${selection.counterTries}Colors`].slice(letter + 1)
             ]
           }));
 
-          if(updatedColors[char] !== "bg-green-400" ) {
-            updatedColors[char] ="bg-orange-400"
+          if(updatedColors[char] !== "bg-green-400 text-white" ) {
+            updatedColors[char] ="bg-orange-400 text-white"
           }
         
           } else {
@@ -189,13 +194,13 @@ export default function Home() {
               ...prevState,
               [`${selection.counterTries}Colors`]: [
                 ...prevState[`${selection.counterTries}Colors`].slice(0, letter),
-                "bg-gray-600",
+                "bg-gray-600 text-white",
                 ...prevState[`${selection.counterTries}Colors`].slice(letter + 1)
               ]
             }));
-            updatedColors[char] ="bg-gray-600"
+            updatedColors[char] ="bg-gray-600 text-white"
           }
-        
+          setIsLoading(false);
       }
       
       setSelection(prevState=> ({
@@ -341,13 +346,20 @@ export default function Home() {
 
   return (
     <>
-      <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <h1 className="text-blue-500">Get the word <span onClick={()=>setControlModalInfo({show:true})}>?</span></h1>
+      <main className="flex min-h-screen flex-col items-center justify-start p-6 gap-8 bg-slate-50">
+        <div className="flex gap-3">
+          <button className="h-12 w-12 text-3xl font-bold text-white bg-slate-600 rounded-full" onClick={()=>setControlModalInfo({show:true})}>?</button>
+          <button className="h-12 px-3 flex flex-wrap justify-center content-center text-xl gap-1 bg-slate-600 text-white rounded-lg" onClick={handleReset}>
+            <img className="h-8 w-8" src="../changeIcon.svg"/>
+            <p>Reset</p>
+          </button>
+        </div>
+      <h1 className="text-slate-600 font-bold text-3xl">Get the word </h1>
       <div className="w-full h-full flex flex-col justify-center gap-3">
         <div className="w-full h-full flex justify-center gap-1">
           {
           selection.firstTry.map((character, index)=> (
-            <div key={"first" + index} className={`w-10 h-10 flex items-center justify-center rounded-lg cursor-pointer ${selection.firstTryColors[index]}`}>
+            <div key={"first" + index} className={`w-10 h-10 flex items-center justify-center rounded-lg cursor-pointer shadow-md ${selection.firstTryColors[index]}`}>
               <p >{character}</p>
             </div>
             ))
@@ -356,7 +368,7 @@ export default function Home() {
         <div className="w-full h-full flex justify-center gap-1">
           {
           selection.secondTry.map((character, index)=> (
-            <div key={"second" + index} className={`w-10 h-10 flex items-center justify-center rounded-lg cursor-pointer ${selection.secondTryColors[index]}`}>
+            <div key={"second" + index} className={`w-10 h-10 flex items-center justify-center rounded-lg cursor-pointer shadow-md ${selection.secondTryColors[index]}`}>
               <p >{character}</p>
             </div>
             ))
@@ -365,7 +377,7 @@ export default function Home() {
         <div className="w-full h-full flex justify-center gap-1">
           {
           selection.thirdTry.map((character, index)=> (
-            <div key={"third" + index} className={`w-10 h-10 flex items-center justify-center rounded-lg cursor-pointer ${selection.thirdTryColors[index]}`}>
+            <div key={"third" + index} className={`w-10 h-10 flex items-center justify-center rounded-lg cursor-pointer shadow-md ${selection.thirdTryColors[index]}`}>
               <p >{character}</p>
             </div>
             ))
@@ -374,7 +386,7 @@ export default function Home() {
         <div className="w-full h-full flex justify-center gap-1">
           {
           selection.fourthTry.map((character, index)=> (
-            <div key={"fourth" + index} className={`w-10 h-10 flex items-center justify-center rounded-lg cursor-pointer ${selection.fourthTryColors[index]}`}>
+            <div key={"fourth" + index} className={`w-10 h-10 flex items-center justify-center rounded-lg cursor-pointer shadow-md ${selection.fourthTryColors[index]}`}>
               <p >{character}</p>
             </div>
             ))
@@ -383,7 +395,7 @@ export default function Home() {
         <div className="w-full h-full flex justify-center gap-1">
           {
           selection.fifthTry.map((character, index)=> (
-            <div key={"fifth" + index} className={`w-10 h-10 flex items-center justify-center rounded-lg cursor-pointer ${selection.fifthTryColors[index]}`}>
+            <div key={"fifth" + index} className={`w-10 h-10 flex items-center justify-center rounded-lg cursor-pointer shadow-md ${selection.fifthTryColors[index]}`}>
               <p >{character}</p>
             </div>
             ))
@@ -392,31 +404,36 @@ export default function Home() {
         <div className="w-full h-full flex justify-center gap-1">
           {
           selection.sixthTry.map((character, index)=> (
-            <div key={"first" + index} className={`w-10 h-10 flex items-center justify-center rounded-lg cursor-pointer ${selection.sixthTryColors[index]}`}>
+            <div key={"first" + index} className={`w-10 h-10 flex items-center justify-center rounded-lg cursor-pointer shadow-md ${selection.sixthTryColors[index]}`}>
               <p >{character}</p>
             </div>
             ))
           }
         </div>
       </div>
-
-      <button onClick={handleTry}>Try!</button>
-      <button onClick={handleReset}>
-          <img src="../changeIcon.svg"/>
-      </button>
         
-      <div className="w-full h-full flex justify-center gap-1">
-        {
+      {
+        isLoading?
+      <div className="loader"></div> :
+      <div className="md:w-128 w-full h-full flex justify-center flex-col md:flex-row gap-1">
+        <div className="w-full flex flex-wrap justify-center gap-2">
+          {
         arrayAlphabet.map(character=> (
-          <div key={character} onClick={()=>handleSelect(character)} className={`w-10 h-10 flex items-center justify-center rounded-lg cursor-pointer ${selection.colors[character]}`}>
+          <div key={character} onClick={()=>handleSelect(character)} className={`w-10 h-10 flex items-center justify-center text-2xl rounded-lg cursor-pointer ${selection.colors[character]}`}>
             <p >{character}</p>
           </div>
           ))
         }
-        <div onClick={()=>handleSelect("delete")} className={`w-20 h-10 flex items-center justify-center rounded-lg cursor-pointer text-white font-bold bg-red-500`}>
+        </div>
+        
+        <div className="flex flex-col gap-2 items-center">
+          <button className={`md:w-20 w-40 h-20 flex items-center justify-center rounded-lg cursor-pointer text-white font-bold bg-emerald-500`} onClick={handleTry}>Try!</button>
+          <div onClick={()=>handleSelect("delete")} className={`md:w-20 w-40 h-10 flex items-center justify-center rounded-lg cursor-pointer text-white font-bold bg-red-500`}>
             <p >{"<-"}</p>
           </div>
+        </div>        
       </div>
+      }
  
     </main>
     <Modal word={selection.word.join("")} show={controlModal.show} type={controlModal.state} closeModal={closeModal} />
