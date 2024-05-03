@@ -372,7 +372,7 @@ export default function Home() {
         <div className="w-full h-full flex justify-center gap-1">
           {
           selection.firstTry.map((character, index)=> (
-            <div key={"first" + index} className={`w-10 h-10 flex items-center justify-center rounded-lg cursor-pointer shadow-md ${selection.firstTryColors[index]}`}>
+            <div key={"first" + index} className={`w-10 h-10 flex items-center justify-center rounded-lg cursor-pointer shadow-md text-black ${selection.firstTryColors[index]}`}>
               <p >{character}</p>
             </div>
             ))
@@ -381,7 +381,7 @@ export default function Home() {
         <div className="w-full h-full flex justify-center gap-1">
           {
           selection.secondTry.map((character, index)=> (
-            <div key={"second" + index} className={`w-10 h-10 flex items-center justify-center rounded-lg cursor-pointer shadow-md ${selection.secondTryColors[index]}`}>
+            <div key={"second" + index} className={`w-10 h-10 flex items-center justify-center rounded-lg cursor-pointer shadow-md text-black ${selection.secondTryColors[index]}`}>
               <p >{character}</p>
             </div>
             ))
@@ -390,7 +390,7 @@ export default function Home() {
         <div className="w-full h-full flex justify-center gap-1">
           {
           selection.thirdTry.map((character, index)=> (
-            <div key={"third" + index} className={`w-10 h-10 flex items-center justify-center rounded-lg cursor-pointer shadow-md ${selection.thirdTryColors[index]}`}>
+            <div key={"third" + index} className={`w-10 h-10 flex items-center justify-center rounded-lg cursor-pointer shadow-md text-black ${selection.thirdTryColors[index]}`}>
               <p >{character}</p>
             </div>
             ))
@@ -399,7 +399,7 @@ export default function Home() {
         <div className="w-full h-full flex justify-center gap-1">
           {
           selection.fourthTry.map((character, index)=> (
-            <div key={"fourth" + index} className={`w-10 h-10 flex items-center justify-center rounded-lg cursor-pointer shadow-md ${selection.fourthTryColors[index]}`}>
+            <div key={"fourth" + index} className={`w-10 h-10 flex items-center justify-center rounded-lg cursor-pointer shadow-md text-black ${selection.fourthTryColors[index]}`}>
               <p >{character}</p>
             </div>
             ))
@@ -408,7 +408,7 @@ export default function Home() {
         <div className="w-full h-full flex justify-center gap-1">
           {
           selection.fifthTry.map((character, index)=> (
-            <div key={"fifth" + index} className={`w-10 h-10 flex items-center justify-center rounded-lg cursor-pointer shadow-md ${selection.fifthTryColors[index]}`}>
+            <div key={"fifth" + index} className={`w-10 h-10 flex items-center justify-center rounded-lg cursor-pointer shadow-md text-black ${selection.fifthTryColors[index]}`}>
               <p >{character}</p>
             </div>
             ))
@@ -417,7 +417,7 @@ export default function Home() {
         <div className="w-full h-full flex justify-center gap-1">
           {
           selection.sixthTry.map((character, index)=> (
-            <div key={"first" + index} className={`w-10 h-10 flex items-center justify-center rounded-lg cursor-pointer shadow-md ${selection.sixthTryColors[index]}`}>
+            <div key={"first" + index} className={`w-10 h-10 flex items-center justify-center rounded-lg cursor-pointer shadow-md text-black ${selection.sixthTryColors[index]}`}>
               <p >{character}</p>
             </div>
             ))
