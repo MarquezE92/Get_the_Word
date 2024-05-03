@@ -12,7 +12,7 @@ Welcome to Get The Word - a simple word-guessing game built with React! This pro
   
 ## Demo
 
-[Live Demo](#) <!-- Add a link to the live demo once deployed -->
+[Live Demo]->https://get-the-word.vercel.app/
 
 ## Features
 
