@@ -164,6 +164,14 @@ export default function Home() {
       return toast.error(`${wordselected} is not a valid word`)
 
     }
+    if(selectedletters[4] === " ") {
+      setSelection(prevState=> ({
+        ...prevState,
+        [selection.counterTries] : [" ", " ", " ", " ", " "]
+      }))
+      setIsLoading(false);
+      return toast.error(`It must be a 5 letters word`)
+    }
     if(selectedletters[4] !== " "){
       for(let letter = 0; letter <5; letter++) {
         let char: string = selectedletters[letter];
@@ -424,7 +432,7 @@ export default function Home() {
         <div className="w-full flex flex-wrap justify-center gap-2">
           {
         arrayAlphabet.map(character=> (
-          <div key={character} onClick={()=>handleSelect(character)} className={`w-10 h-10 flex items-center justify-center text-2xl rounded-lg cursor-pointer ${selection.colors[character]}`}>
+          <div key={character} onClick={()=>handleSelect(character)} className={`w-10 h-10 flex items-center justify-center text-2xl rounded-lg cursor-pointer text-black ${selection.colors[character]}`}>
             <p >{character}</p>
           </div>
           ))
