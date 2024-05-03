@@ -6,8 +6,10 @@ import { Toaster, toast } from "sonner";
 import ModalInfo from "./components/ModalInfo";
 import "./loader.css"
 
-
-const alphabet = {
+interface LetterIndex {
+  [key: string]: string; // Esta firma permite acceder a cualquier clave de tipo string
+}
+const alphabet: LetterIndex = {
   A: "",
   B: "",
   C: "",
@@ -47,8 +49,9 @@ interface StateShowInfo {
 }
 
 interface StateObject {
-  colors:object;
-  word: string[];
+  [key: string]: any;
+  colors:LetterIndex;
+  word: string;
   counterTries: string;
   firstTry: string[];
   firstTryColors: string[];
@@ -76,9 +79,9 @@ export default function Home() {
   })
   const [isLoading, setIsLoading] = useState(false)
   const colorBlock = "border border-gray-400 bg-white"
-  const [selection, setSelection] = useState({
+  const [selection, setSelection] = useState<StateObject>({
     "colors": alphabet,
-    "word": ["p", "r", "u", "e", "b"],
+    "word": "prueb",
     "counterTries": "firstTry",
     "firstTry": [" ", " ", " ", " ", " "],
     "firstTryColors": [colorBlock, colorBlock, colorBlock, colorBlock, colorBlock],
@@ -117,9 +120,10 @@ export default function Home() {
   }
 
   const handleReset = ()=> {
+    const newWord = generate({ minLength: 5, maxLength: 5 });
     setSelection(prevState => ({
       colors: alphabet,
-      word: generate({ minLength: 5, maxLength: 5 }).toUpperCase().split(""),
+      word: (typeof newWord === "string") ? newWord.toUpperCase() : "",
       counterTries: "firstTry",
       "firstTry": [" ", " ", " ", " ", " "],
       firstTryColors: [colorBlock, colorBlock, colorBlock, colorBlock, colorBlock],
@@ -136,7 +140,7 @@ export default function Home() {
     }))
   }
 
-  const tryTracker = {
+  const tryTracker: LetterIndex = {
     "firstTry":"secondTry",
     "secondTry":"thirdTry",
     "thirdTry":"fourthTry",
@@ -147,7 +151,7 @@ export default function Home() {
 
   const handleTry = async()=>{
     setIsLoading(true)
-    let updatedColors = { ...selection.colors };
+    let updatedColors: LetterIndex = { ...selection.colors };
     const selectedletters = selection[selection.counterTries]
     const wordselected = selectedletters.join("")
     const response = await dicCall(wordselected)
@@ -161,8 +165,8 @@ export default function Home() {
 
     }
     if(selectedletters[4] !== " "){
-      for(let letter in selectedletters) {
-        let char = selectedletters[letter]
+      for(let letter = 0; letter <5; letter++) {
+        let char: string = selectedletters[letter];
 
         if(selection.word[letter] === char) {
           updatedColors[char] = "bg-green-400 text-white"
@@ -209,7 +213,7 @@ export default function Home() {
       colors: updatedColors
     }))
   }
-    if(wordselected === selection.word.join("")) {
+    if(wordselected === selection.word) {
       return setControlModal(prevState=>({...prevState, show: true}))
     } else if(selection.counterTries === "sixthTry") {
       return setControlModal(prevState=>({state:"lose", show: true}))
@@ -336,8 +340,9 @@ export default function Home() {
     }
 
     useEffect(()=>{
-      let firstWord = generate({ minLength: 5, maxLength: 5 }).toUpperCase().split("")
-      console.log(firstWord)
+      let newWord = generate({ minLength: 5, maxLength: 5 });
+      let firstWord = (typeof newWord === "string") ? newWord.toUpperCase() : "";
+
       setSelection(prevState=> ({
         ...prevState,
         word: firstWord
@@ -436,7 +441,7 @@ export default function Home() {
       }
  
     </main>
-    <Modal word={selection.word.join("")} show={controlModal.show} type={controlModal.state} closeModal={closeModal} />
+    <Modal word={selection.word} show={controlModal.show} type={controlModal.state} closeModal={closeModal} />
     <ModalInfo show={controlModalInfo.show} closeModal={closeModalInfo} />
     <Toaster richColors position="top-center" />
     </>
