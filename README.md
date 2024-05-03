@@ -19,7 +19,7 @@ Welcome to Get The Word - a simple word-guessing game built with React! This pro
 - **Random Word Generation**: I use npm random-words to randomly select words for players to guess.
 - **Interactive Gameplay**: Players can guess letters and see their progress.
 - **Visual Feedback**: Provides visual feedback for correct and incorrect guesses.
-- **Scoring System**: Keep track of the player's score based on their performance.
+- **Word recognition**: It only allows valid english words.
 - **Responsive Design**: Playable on both desktop and mobile devices.
 
 ## Installation
@@ -29,7 +29,7 @@ To run this project locally, follow these steps:
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/yourusername/get-the-word.git
+git clone https://github.com/MarquezE92/Get_the_Word.git
 ```
 2. Navigate into the project directory:
 ```bash
